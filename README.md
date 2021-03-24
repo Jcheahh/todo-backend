@@ -1,24 +1,20 @@
-# README
+# ToDo-List
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+ToDo list is a simple Web application to save your daily task. I am using a server-client architecture and this is the server side written in Ruby on Rails.
 
-Things you may want to cover:
+## Features
 
-* Ruby version
+* Add new task
+* Edit task
+* Mark task as completed or uncompleted
+* Delete task
 
-* System dependencies
+## Technologies used:
 
-* Configuration
+* HTML
+* CSS
+* [React](https://github.com/Jcheahh/TodoList)
+* Ruby on Rails
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## Screenshot
+![ToDo-List](todolist.PNG)
