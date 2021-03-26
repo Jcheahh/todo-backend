@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::API
     before_action :cors_set_access_control_headers
 
+    include ExceptionHandler
+    
     def cors_preflight_check
         if request.method == 'OPTIONS'
             cors_set_access_control_headers
