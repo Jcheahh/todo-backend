@@ -1,6 +1,6 @@
 # ToDo-List
 
-ToDo list is a simple Web application to save your daily task. I am using a server-client architecture and this is the server side written in Ruby on Rails.
+ToDo list is a simple Web application to save your daily task. I am using a server-client architecture and this is the server side written in Ruby on Rails. I have also included model test and request test for this project.
 
 ## Features
 
