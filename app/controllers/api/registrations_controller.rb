@@ -3,7 +3,7 @@ class Api::RegistrationsController < Devise::RegistrationsController
     user = User.new(sign_up_params)
 
     if user.save
-      token = current_user.generate_jwt
+      token = user.generate_jwt
       render json: { token: token }
     else
       # TODO: user.errors.full_messages
