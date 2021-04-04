@@ -1,11 +1,11 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
-require 'spec_helper'
-require 'database_cleaner'
-ENV['RAILS_ENV'] ||= 'test'
-require File.expand_path('../config/environment', __dir__)
+require "spec_helper"
+require "database_cleaner"
+ENV["RAILS_ENV"] ||= "test"
+require File.expand_path("../config/environment", __dir__)
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
-require 'rspec/rails'
+require "rspec/rails"
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -32,7 +32,7 @@ Shoulda::Matchers.configure do |config|
   end
 end
 
-Dir[Rails.root.join('spec/support/request_spec_helper.rb')].each { |f| require f }
+Dir[Rails.root.join("spec/support/request_spec_helper.rb")].each { |f| require f }
 
 begin
   ActiveRecord::Migration.maintain_test_schema!
@@ -55,7 +55,7 @@ RSpec.configure do |config|
       example.run
     end
   end
-  
+
   config.include RequestSpecHelper, type: :request
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your

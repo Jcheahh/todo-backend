@@ -3,7 +3,6 @@ class Api::RegistrationsController < Devise::RegistrationsController
     user = User.new(sign_up_params)
 
     if user.save
-      sign_in(resource_name, user)
       token = current_user.generate_jwt
       render json: { token: token }
     else

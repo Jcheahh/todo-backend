@@ -1,6 +1,6 @@
-require 'rails_helper'
+require "rails_helper"
 
-RSpec.describe Todo, :type => :model do
+RSpec.describe Todo, type: :model do
   subject { described_class.new(task: "Swimming", is_done: false) }
   it "is valid when Todo Model is valid" do
     expect(subject).to be_valid

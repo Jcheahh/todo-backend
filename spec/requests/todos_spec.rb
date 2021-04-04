@@ -1,12 +1,10 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Todos", type: :request do
-
   let!(:todos) { create_list(:todo, 10) }
   let(:todo_id) { todos.first.id }
 
   describe "GET /todos" do
-
     before { get "/todos" }
 
     it "return todos!" do
@@ -17,11 +15,10 @@ RSpec.describe "Todos", type: :request do
     it "return status code 200" do
       expect(response).to have_http_status(200)
     end
-
   end
 
   describe "GET /todos#show" do
-    before { get "/todos/#{todo_id}"}
+    before { get "/todos/#{todo_id}" }
 
     context "when the todos exists" do
       it "return the todos" do
@@ -35,7 +32,7 @@ RSpec.describe "Todos", type: :request do
     end
 
     context "when the todos doesn't exists" do
-      let (:todo_id) { 0 }
+      let(:todo_id) { 0 }
 
       it "return status code 404" do
         expect(response).to have_http_status(404)
@@ -45,13 +42,12 @@ RSpec.describe "Todos", type: :request do
         expect(response.body).to match(/Couldn't find Todo/)
       end
     end
-
   end
 
   describe "POST /todos#create" do
     let(:valid_attributes) { { task: "Swimming", is_done: "false" } }
     context "when the todos is valid" do
-      before { post "/todos", params: valid_attributes}
+      before { post "/todos", params: valid_attributes }
       it "return created todos" do
         expect(json["task"]).to eq("Swimming")
         expect(json["is_done"]).to eq(false)
@@ -97,5 +93,5 @@ RSpec.describe "Todos", type: :request do
     it "deleted" do
       expect(response).to be_successful
     end
-  end 
+  end
 end

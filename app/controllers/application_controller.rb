@@ -8,30 +8,30 @@ class ApplicationController < ActionController::API
   include ExceptionHandler
 
   def cors_preflight_check
-    if request.method == 'OPTIONS'
+    if request.method == "OPTIONS"
       cors_set_access_control_headers
-      render text: '', content_type: 'text/plain'
+      render text: "", content_type: "text/plain"
     end
   end
 
   protected
 
   def cors_set_access_control_headers
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    response.headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, PATCH, DELETE, OPTIONS'
-    response.headers['Access-Control-Allow-Headers'] =
-      'Origin, Content-Type, Accept, Authorization, Token, Auth-Token, Email, X-User-Token, X-User-Email'
-    response.headers['Access-Control-Max-Age'] = '1728000'
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Methods"] = "POST, GET, PUT, PATCH, DELETE, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] =
+      "Origin, Content-Type, Accept, Authorization, Token, Auth-Token, Email, X-User-Token, X-User-Email"
+    response.headers["Access-Control-Max-Age"] = "1728000"
   end
 
   private
 
   def process_token
-    if request.headers['Authorization'].present?
+    if request.headers["Authorization"].present?
       begin
-        jwt_payload = JWT.decode(request.headers['Authorization'].split(' ')[1].remove('"'),
+        jwt_payload = JWT.decode(request.headers["Authorization"].split(" ")[1].remove('"'),
                                  Rails.application.secrets.secret_key_base).first
-        @current_user_id = jwt_payload['id']
+        @current_user_id = jwt_payload["id"]
       rescue JWT::ExpiredSignature, JWT::VerificationError, JWT::DecodeError
         head :unauthorized
       end
