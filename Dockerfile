@@ -1,6 +1,7 @@
-FROM ruby:2.7.0-alpine AS builder
+FROM ruby:2.7.0 AS builder
 
-RUN apk update && apk add build-base postgresql-dev
+RUN apt-get update && apt-get -y install build-essential libpq-dev
+# RUN apk update && apk add build-base postgresql-dev
 
 ENV APP_HOME /app
 RUN mkdir $APP_HOME
@@ -11,7 +12,12 @@ ADD Gemfile* $APP_HOME/
 RUN bundle install
 
 ENV RAILS_ENV=production
+ENV PORT=80
+
+ARG TODO_BACKEND_DATABASE_PASSWORD
 
 ADD . $APP_HOME
+EXPOSE 80
+
 CMD ["rails","server","-b","0.0.0.0"]
 
