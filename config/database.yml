@@ -81,6 +81,7 @@ test:
 #
 production:
   <<: *default
+  host: localhost
   database: todo_backend_production
   username: todo_backend
   password: <%= ENV['TODO_BACKEND_DATABASE_PASSWORD'] %>
