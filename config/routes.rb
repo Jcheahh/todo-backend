@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   end
 
   resources :todo_group, only: [:show, :create, :update, :destroy] do
-    resources :todos
+    resources :todos, except: [:show, :new]
   end
 
   root "todos#index"
