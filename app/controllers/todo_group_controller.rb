@@ -1,5 +1,6 @@
 class TodoGroupController < ApplicationController
   before_action :set_todo_group, only: [:show, :update, :destroy]
+  before_action :authenticate_user!
 
   def show
     @todo_group = current_user.todo_groups.find(params[:id])
