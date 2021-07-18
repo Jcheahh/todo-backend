@@ -1,15 +1,18 @@
 require "rails_helper"
 
 RSpec.describe "Todos", type: :request do
-  let!(:todos) { create_list(:todo, 10) }
-  let(:todo_id) { todos.first.id }
+  let!(:user) { create(:user) }
+  let!(:todo_group) { create(:todo_group, user_id: user.id) }
+  let!(:todo) { create(:todo, todo_group_id: todo_group.id) }
+  let(:todo_group_id) { todo_group.id }
+  let(:todo_id) { todo.id }
+  let(:token) { user.generate_jwt }
 
   describe "GET /todos" do
-    before { get "/todos" }
+    before { get "/todo_group/#{todo_group_id}/todos", headers: { Authorization: "Bearer #{token}" } }
 
     it "return todos!" do
       expect(response.body).not_to be_empty
-      expect(json.length).to eq(10)
     end
 
     it "return status code 200" do
@@ -17,37 +20,13 @@ RSpec.describe "Todos", type: :request do
     end
   end
 
-  describe "GET /todos#show" do
-    before { get "/todos/#{todo_id}" }
-
-    context "when the todos exists" do
-      it "return the todos" do
-        expect(response.body).not_to be_empty
-        expect(json["id"]).to eq(todo_id)
-      end
-
-      it "return status code 200" do
-        expect(response).to have_http_status(200)
-      end
-    end
-
-    context "when the todos doesn't exists" do
-      let(:todo_id) { 0 }
-
-      it "return status code 404" do
-        expect(response).to have_http_status(404)
-      end
-
-      it "return cannot found" do
-        expect(response.body).to match(/Couldn't find Todo/)
-      end
-    end
-  end
-
   describe "POST /todos#create" do
     let(:valid_attributes) { { task: "Swimming", is_done: "false" } }
     context "when the todos is valid" do
-      before { post "/todos", params: valid_attributes }
+      before do
+        post "/todo_group/#{todo_group_id}/todos", params: valid_attributes,
+                                                   headers: { Authorization: "Bearer #{token}" }
+      end
       it "return created todos" do
         expect(json["task"]).to eq("Swimming")
         expect(json["is_done"]).to eq(false)
@@ -59,7 +38,10 @@ RSpec.describe "Todos", type: :request do
     end
 
     context "when the todos is invalid" do
-      before { post "/todos", params: { task: "Jogging" } }
+      before do
+        post "/todo_group/#{todo_group_id}/todos", params: { task: "Jogging" },
+                                                   headers: { Authorization: "Bearer #{token}" }
+      end
       it "return status code 422" do
         expect(response).to have_http_status(422)
       end
@@ -72,7 +54,10 @@ RSpec.describe "Todos", type: :request do
 
   describe "PUT /todos#update" do
     context "when the task valid" do
-      before { put "/todos/#{todo_id}", params: { task: "Playing Badminton" } }
+      before do
+        put "/todo_group/#{todo_group_id}/todos/#{todo_id}", params: { task: "Playing Badminton" },
+                                                             headers: { Authorization: "Bearer #{token}" }
+      end
 
       it "return status code 204" do
         expect(response).to have_http_status(204)
@@ -85,7 +70,10 @@ RSpec.describe "Todos", type: :request do
   end
 
   describe "DELETE /todos#destroy" do
-    before { delete "/todos/#{todo_id}" }
+    before do
+      delete "/todo_group/#{todo_group_id}/todos/#{todo_id}",
+             headers: { Authorization: "Bearer #{token}" }
+    end
     it "return status code 204" do
       expect(response).to have_http_status(204)
     end

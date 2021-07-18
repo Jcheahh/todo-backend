@@ -6,7 +6,9 @@ Rails.application.routes.draw do
                controllers: { registrations: "api/registrations", sessions: "api/sessions" }
   end
 
-  root "todos#index"
+  resources :todo_group, only: [:index, :show, :create, :update, :destroy] do
+    resources :todos, except: [:show, :new]
+  end
 
-  resources :todos
+  root "todos#index"
 end

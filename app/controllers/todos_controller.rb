@@ -1,15 +1,16 @@
 class TodosController < ApplicationController
-  before_action :set_todo, only: %i[update destroy]
   before_action :authenticate_user!
+  before_action :set_todo_group
+  before_action :set_todo, only: [:update, :destroy]
 
   def index
-    @todos = current_user.todos
+    @todos = @todo_group.todos
 
     render json: @todos
   end
 
   def create
-    @todo = current_user.todos.create!(todo_params)
+    @todo = @todo_group.todos.create!(todo_params)
 
     render json: @todo, status: :created
   end
@@ -21,7 +22,7 @@ class TodosController < ApplicationController
   end
 
   def destroy
-    @todo = current_user.todos.destroy(params[:id])
+    @todo = @todo_group.todos.destroy(params[:id])
 
     head :no_content
   end
@@ -32,7 +33,11 @@ class TodosController < ApplicationController
     params.permit(:task, :is_done)
   end
 
+  def set_todo_group
+    @todo_group = current_user.todo_groups.find(params[:todo_group_id])
+  end
+
   def set_todo
-    @todo = current_user.todos.find(params[:id])
+    @todo = @todo_group.todos.find(params[:id])
   end
 end
