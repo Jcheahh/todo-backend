@@ -9,9 +9,7 @@ class TodoGroupController < ApplicationController
   end
 
   def show
-    @todo_group = current_user.todo_groups.find(params[:id])
-
-    render json: @todo_group
+    render json: @todo_group.to_json(include: :todos)
   end
 
   def create
